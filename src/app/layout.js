@@ -24,7 +24,7 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
         <BootstrapClient />
-        {children}
+        <main className="flex-grow-1">{children}</main>
       </body>
     </html>
   );

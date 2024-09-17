@@ -3,12 +3,23 @@ import { useState, useEffect } from "react";
 import { CustomerServices } from "@/helpers/customer";
 import AddCustomerModal from "@/components/customer/add-customer-modal";
 import CustomersTable from "@/components/customer/customers-table";
+import TablePagination from "@/components/customer/table-pagination";
 
 const customerServices = new CustomerServices();
 export default function Home() {
   const [customers, setCustomers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+
+  const [currentPage, setCurrentPage] = useState(1);
+  const customersPerPage = 10;
+  const indexOfLastCustomer = currentPage * customersPerPage;
+  const indexOfFirstCustomer = indexOfLastCustomer - customersPerPage;
+  const currentCustomers = customers.slice(
+    indexOfFirstCustomer,
+    indexOfLastCustomer
+  );
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
   useEffect(() => {
     fetchCustomers();
@@ -73,7 +84,17 @@ export default function Home() {
           Müşteri Ekle
         </button>
       </div>
-      <CustomersTable customers={customers} />
+      <CustomersTable customers={currentCustomers} />
+      {customers.length > customersPerPage && (
+        <div className="d-flex justify-content-center">
+          <TablePagination
+            customersPerPage={customersPerPage}
+            totalCustomers={customers.length}
+            paginate={paginate}
+            currentPage={currentPage}
+          />
+        </div>
+      )}
     </div>
   );
 }

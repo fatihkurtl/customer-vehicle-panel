@@ -20,8 +20,32 @@ export default function Home() {
 
 
   return (
-    <div>
-      <h1 className="">Hello world!</h1>
-    </div>
+    <div className="container mt-5">
+  <h1 className="mb-4">Müşteri Listesi</h1>
+  <table className="table table-striped table-hover">
+    <thead className="table-dark">
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Adı Soyadı</th>
+        <th scope="col">Araçlar</th>
+        <th scope="col">İşlemler</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <th scope="row">1</th>
+        <td>Örnek Müşteri</td>
+        <td>
+          <a href="#" className="btn btn-info btn-sm">Araçlar</a>
+        </td>
+        <td>
+          <button className="btn btn-warning btn-sm me-2">Düzenle</button>
+          <button className="btn btn-danger btn-sm">Sil</button>
+        </td>
+      </tr>
+      {/* Diğer müşteri satırları buraya eklenebilir */}
+    </tbody>
+  </table>
+</div>
   );
 }

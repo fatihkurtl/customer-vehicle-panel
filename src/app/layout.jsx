@@ -24,7 +24,7 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body className={`${geistSans.variable} ${geistMono.variable}`}>
+      <body className={`${geistSans.variable} ${geistMono.variable} d-flex flex-column min-vh-100`}>
         <BootstrapClient />
         <Navbar />
         <main className="flex-grow-1">{children}</main>

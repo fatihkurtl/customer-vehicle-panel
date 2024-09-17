@@ -6,10 +6,15 @@ const config = `Server=${process.env.DB_SERVER},${process.env.DB_PORT};Database=
 
 const _port = 55469;
 
-export async function executeQuery(query) {
+export async function executeQuery(query, params = []) {
   try {
     await mssql.connect(config);
-    const result = await mssql.query(query);
+    const request = new mssql.Request();
+    params.forEach((param) => {
+      request.input(param.name, param.value);
+    });
+
+    const result = await request.query(query);
     return result;
   } catch (error) {
     console.error("Query execution error:", error);

@@ -14,4 +14,13 @@ export class CustomerServices {
       throw error;
     }
   }
+
+  async addCustomer(data) {
+    try {
+      return await api.post(`${this.ENDPOINT}/add`, data);
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
+  }
 }

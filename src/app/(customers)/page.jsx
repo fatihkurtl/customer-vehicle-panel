@@ -1,6 +1,8 @@
 "use client";
 import { useState, useEffect } from "react";
 import { CustomerServices } from "@/helpers/customer";
+import AddCustomerModal from "@/components/customer/add-customer-modal";
+import CustomersTable from "@/components/customer/customers-table";
 
 const customerServices = new CustomerServices();
 export default function Home() {
@@ -13,39 +15,65 @@ export default function Home() {
   }, []);
 
   const fetchCustomers = async () => {
-    const result = await customerServices.getAllCustomers();
-    console.log(result);
+    try {
+      setLoading(true);
+      const result = await customerServices.getAllCustomers();
+      console.log(result);
+      if (result.success) {
+        setCustomers(result.customers);
+        setLoading(false);
+      } else {
+        setError(result.message);
+        setLoading(false);
+      }
+    } catch (error) {
+      console.log(error);
+      setError(error);
+    } finally {
+      setLoading(false);
+    }
   };
+
+  const deleteCustomer = async (id) => {
+    try {
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  if (loading) {
+    return (
+      <div className="container mt-5">
+        <h1>Müşteri Listesi</h1>
+        <p>Yükleniyor...</p>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="container mt-5">
+        <h1>Müşteri Listesi</h1>
+        <p>{error}</p>
+      </div>
+    );
+  }
 
   return (
     <div className="container mt-5">
-      <h1 className="mb-4">Müşteri Listesi</h1>
-      <table className="table table-striped table-hover">
-        <thead className="table-dark">
-          <tr>
-            <th scope="col">#</th>
-            <th scope="col">Adı Soyadı</th>
-            <th scope="col">Araçlar</th>
-            <th scope="col">İşlemler</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <th scope="row">1</th>
-            <td>Örnek Müşteri</td>
-            <td>
-              <a href="#" className="btn btn-info btn-sm">
-                Araçlar
-              </a>
-            </td>
-            <td>
-              <button className="btn btn-warning btn-sm me-2">Düzenle</button>
-              <button className="btn btn-danger btn-sm">Sil</button>
-            </td>
-          </tr>
-          {/* Diğer müşteri satırları buraya eklenebilir */}
-        </tbody>
-      </table>
+      <AddCustomerModal />
+      <div className="d-flex justify-content-between align-items-center mb-4">
+        <h1>Müşteri Listesi</h1>
+        <button
+          className="btn btn-primary"
+          data-bs-toggle="modal"
+          data-bs-target="#addCustomerModal"
+          data-bs-whatever="@getbootstrap"
+        >
+          Müşteri Ekle
+        </button>
+      </div>
+      <CustomersTable customers={customers} />
     </div>
   );
 }

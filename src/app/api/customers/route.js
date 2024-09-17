@@ -1,7 +1,15 @@
 import { NextResponse } from "next/server";
-import { testConnection } from "@/app/lib/db";
+import { getAllCustomers } from "../helpers/customer";
 
 export async function GET(request) {
-  await testConnection();
-  return NextResponse.json({ message: "Customers API", reqHed: Object.fromEntries(request.headers) });
+  try {
+    const customers = await getAllCustomers();
+    return NextResponse.json({ success: true, status: 200, customers });
+  } catch (error) {
+    console.error("Error:", error);
+    return NextResponse.json(
+      { error: "An error occurred while fetching customers" },
+      { status: 500 }
+    );
+  }
 }

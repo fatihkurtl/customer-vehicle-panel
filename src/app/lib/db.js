@@ -2,32 +2,70 @@ import mssql from "mssql";
 import dotenv from "dotenv";
 
 dotenv.config();
-const config =
-  "Server=FATIHKURT\\SQLEXP,55469;Database=CustomerVehicleService;User Id=fatihcan;password=1234;trustservercertificate=True;";
+const config = `Server=${process.env.DB_SERVER},${process.env.DB_PORT};Database=${process.env.DB_NAME};User Id=${process.env.DB_USER};password=${process.env.DB_PASSWORD};trustservercertificate=True;`;
 
 const _port = 55469;
-/* const config = {
-  server: "FATIHKURT\\SQLEXP",
-  port: _port,
-  database: "CustomerVehicleService",
-  driver: "msnodesqlv8",
-  options: {
-    trustedConnection: true,
-  },
-}; */
 
-export async function testConnection() {
+export async function executeQuery(query) {
   try {
-    mssql.connect(config, function (err) {
-      if (err) console.log(err);
-      let request = new mssql.Request();
-
-      request.query("SELECT 1", function (err, recordset) {
-        if (err) console.log(err);
-        console.log(recordset);
-      });
-    });
+    await mssql.connect(config);
+    const result = await mssql.query(query);
+    return result;
   } catch (error) {
-    console.error("Bağlantı hatası:", error);
+    console.error("Query execution error:", error);
+    throw error;
+  } finally {
+    await mssql.close();
   }
+}
+
+export async function createDatabase() {
+  const query = `
+    IF NOT EXISTS (SELECT * FROM sys.databases WHERE name = 'CustomerVehicleService')
+    BEGIN
+        CREATE DATABASE CustomerVehicleService;
+    END
+  `;
+  await executeQuery(query);
+}
+
+export async function createCustomersTable() {
+  const query = `
+    USE CustomerVehicleService;
+    IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='Customers' and xtype='U')
+    BEGIN
+        CREATE TABLE Customers (
+            Id INT IDENTITY(1,1) PRIMARY KEY,
+            FullName NVARCHAR(100) NOT NULL UNIQUE,
+            CreatedAt DATETIME2 DEFAULT GETDATE()
+        );
+    END
+  `;
+  await executeQuery(query);
+}
+
+export async function createVehiclesTable() {
+  const query = `
+    USE CustomerVehicleService;
+    IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='Vehicles' and xtype='U')
+    BEGIN
+        CREATE TABLE Vehicles (
+            Id INT IDENTITY(1,1) PRIMARY KEY,
+            CustomerId INT NOT NULL,
+            Brand NVARCHAR(50) NOT NULL,
+            Plate NVARCHAR(20) NOT NULL UNIQUE,
+            ModelYear INT NOT NULL,
+            CreatedAt DATETIME2 DEFAULT GETDATE(),
+            FOREIGN KEY (CustomerId) REFERENCES Customers(Id)
+        );
+    END
+  `;
+  await executeQuery(query);
+}
+
+export async function initializeDatabase() {
+  await createDatabase();
+  await createCustomersTable();
+  await createVehiclesTable();
+  console.log("Database and tables initialized successfully");
 }

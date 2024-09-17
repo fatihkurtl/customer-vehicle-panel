@@ -1,4 +1,4 @@
-export class ApiService {
+export class ApiServices {
     constructor(baseUrl) {
       this.baseUrl = baseUrl;
     }
@@ -55,5 +55,5 @@ export class ApiService {
     }
   }
   
-  const api = new ApiService(process.env.NEXT_PUBLIC_BASE_API_URL);
+  const api = new ApiServices(process.env.NEXT_PUBLIC_BASE_API_URL);
   export default api;

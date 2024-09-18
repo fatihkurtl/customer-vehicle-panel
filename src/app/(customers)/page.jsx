@@ -4,6 +4,7 @@ import { CustomerServices } from "@/helpers/customer";
 import AddCustomerModal from "@/components/customer/add-customer-modal";
 import CustomersTable from "@/components/customer/customers-table";
 import TablePagination from "@/components/customer/table-pagination";
+import { UserPlus } from "lucide-react";
 
 const customerServices = new CustomerServices();
 export default function Home() {
@@ -45,13 +46,6 @@ export default function Home() {
     }
   };
 
-  const deleteCustomer = async (id) => {
-    try {
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
   if (loading) {
     return (
       <div className="container mt-5">
@@ -76,12 +70,13 @@ export default function Home() {
       <div className="d-flex justify-content-between align-items-center mb-4">
         <h1>Müşteri Listesi</h1>
         <button
-          className="btn btn-primary"
+          className="btn btn-primary d-flex align-items-center"
           data-bs-toggle="modal"
           data-bs-target="#addCustomerModal"
           data-bs-whatever="@getbootstrap"
         >
-          Müşteri Ekle
+          <span className="me-2">Müşteri Ekle</span>
+          <UserPlus size={20} />
         </button>
       </div>
       <CustomersTable customers={currentCustomers} />

@@ -7,6 +7,7 @@ export async function getAllCustomers() {
     SELECT c.*, v.Id AS VehicleId
     FROM Customers c
     LEFT JOIN Vehicles v ON c.Id = v.CustomerId
+    ORDER BY c.CreatedAt DESC, c.Id DESC
   `;
   const result = await executeQuery(query);
   return result.recordset;

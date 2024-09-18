@@ -10,6 +10,9 @@ export default function AddCustomerModal() {
 
   const alerts = useSwal();
 
+  const modal = document.getElementById("addCustomerModal");
+  const backdrops = document.getElementsByClassName("modal-backdrop");
+
   const handleChange = (e) => {
     setFullname(e.target.value);
   };
@@ -28,7 +31,11 @@ export default function AddCustomerModal() {
       } else {
         alerts.success("Başarılı", response.result.message);
         document.getElementById("addCustomerModal").click();
-        location.href = "/";
+        modal.classList.add("d-none");
+        document.body.classList.remove("modal-open");
+        while (backdrops.length > 0) {
+          backdrops[0].parentNode.removeChild(backdrops[0]);
+        }
       }
     } catch (error) {
       console.error("Error:", error);

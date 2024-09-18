@@ -1,6 +1,20 @@
+"use client";
+
+import { useState, useEffect } from "react";
 import { Car } from "lucide-react";
 
 export default function TotalVehiclesCard({ totalVehicles }) {
+
+  const [vehiclesCount, setVehiclesCount] = useState(0);
+
+  useEffect(() => {
+    let count = 0;
+    for (let i = 0; i < totalVehicles.length; i++) {
+      count += totalVehicles[i].VehicleCount;
+    }
+    setVehiclesCount(count);
+  }, [totalVehicles]);
+
   return (
     <div className="col-md-3 mt-md-0 mt-3">
       <div className="card bg-light">
@@ -9,7 +23,7 @@ export default function TotalVehiclesCard({ totalVehicles }) {
           <div>
             <h5 className="card-title mb-0">Toplam Araç</h5>
             <p className="card-text fs-4 fw-bold text-success mb-0">
-              {totalVehicles}
+             {vehiclesCount}
             </p>
           </div>
         </div>

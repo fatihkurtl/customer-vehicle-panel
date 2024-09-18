@@ -74,7 +74,7 @@ export default function Home() {
       <AddCustomerModal />
       <div className="row mb-4">
         <TotalCustomersCard customersCount={customers.length} />
-        <TotalVehiclesCard totalVehicles={totalVehicles} />
+        <TotalVehiclesCard totalVehicles={customers} />
       </div>
       <div className="d-flex justify-content-between align-items-center mb-4">
         <h1>Müşteri Listesi</h1>

@@ -22,6 +22,7 @@ export default function AddVehicleModal({ customer, customerId }) {
   };
 
   const modal = document.getElementById("addVehicleModal");
+  const backdrops = document.getElementsByClassName("modal-backdrop");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -37,11 +38,8 @@ export default function AddVehicleModal({ customer, customerId }) {
           brand: "",
           modelYear: "",
         });
-        // modal.classList.remove("show");
-        // modal.style.display = "none";
         modal.classList.add("d-none");
         document.body.classList.remove("modal-open");
-        const backdrops = document.getElementsByClassName("modal-backdrop");
         while (backdrops.length > 0) {
           backdrops[0].parentNode.removeChild(backdrops[0]);
         }

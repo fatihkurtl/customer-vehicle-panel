@@ -4,6 +4,7 @@ import { useParams, useSearchParams } from "next/navigation";
 import { CustomerServices } from "@/helpers/customer";
 import { CirclePlus, Trash2, Pencil } from "lucide-react";
 import AddVehicleModal from "@/components/vehicle/add-vehicle-modal";
+import VehiclesTable from "@/components/vehicle/vehicles-table";
 
 const customerServices = new CustomerServices();
 
@@ -64,8 +65,6 @@ export default function CustomerVehicles() {
       <AddVehicleModal customer={customer[0].FullName} customerId={customerId} />
       <div className="d-flex justify-content-between align-items-center mb-4">
         <h1>Müşteri Araç Listesi - {customer[0].FullName}</h1>
-        {/* <h2>{customer[0].FullName}</h2> */}
-
         <button
           className="btn btn-primary d-flex align-items-center"
           data-bs-toggle="modal"
@@ -76,50 +75,7 @@ export default function CustomerVehicles() {
           <CirclePlus size={20} />
         </button>
       </div>
-      <table className="table table-striped table-hover">
-        <thead className="table-dark">
-          <tr>
-            <th scope="col">#</th>
-            <th scope="col">Plaka</th>
-            <th scope="col">Marka</th>
-            <th scope="col">Model</th>
-            <th scope="col">İşlemler</th>
-          </tr>
-        </thead>
-        <tbody>
-          {vehicles.length > 0 ? (
-            vehicles.map((vehicle, index) => (
-              <tr key={vehicle.VehicleId}>
-                <th scope="row">{vehicle.Id}</th>
-                <td>{vehicle.Plate}</td>
-                <td>{vehicle.Brand}</td>
-                <td>{vehicle.ModelYear}</td>
-                <td>
-                <div className="d-flex gap-2">
-                  <button className="btn btn-warning btn-sm d-flex align-items-center justify-content-center">
-                    <span className="me-1">Düzenle</span>
-                    <Pencil size={16} />
-                  </button>
-                  <button
-                    // onClick={() => deleteCustomer(customer.Id)}
-                    className="btn btn-danger btn-sm d-flex align-items-center justify-content-center"
-                  >
-                    <span className="me-1">Sil</span>
-                    <Trash2 size={16} />
-                  </button>
-                </div>
-                </td>
-              </tr>
-            ))
-          ) : (
-            <tr>
-              <td className="text-center" colSpan="6">
-                Müşteriye kayıtlı bir araç bulunmamaktadır.
-              </td>
-            </tr>
-          )}
-        </tbody>
-      </table>
+      <VehiclesTable vehicles={vehicles} />
     </div>
   );
 }

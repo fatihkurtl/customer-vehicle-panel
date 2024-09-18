@@ -40,6 +40,7 @@ export default function CustomersTable({ customers }) {
         <tr>
           <th scope="col">#</th>
           <th scope="col">Kayıt Tarihi</th>
+          <th scope="col">Araç Sayısı</th>
           <th scope="col">Adı Soyadı</th>
           <th scope="col">Araçlar</th>
           <th scope="col">İşlemler</th>
@@ -51,6 +52,7 @@ export default function CustomersTable({ customers }) {
             <tr key={index}>
               <th scope="row">{customer.Id}</th>
               <td>{new Date(customer.CreatedAt).toLocaleDateString()}</td>
+              <td>{customer.VehicleCount}</td>
               <td>{customer.FullName}</td>
               <td>
                 <Link

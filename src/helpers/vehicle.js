@@ -23,4 +23,13 @@ export class VehicleServices {
       throw error;
     }
   }
+
+  async deleteVehicle(vehicleId) {
+    try {
+      return await api.delete(`${this.ENDPOINT}/delete/${vehicleId}`);
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
+  }
 }

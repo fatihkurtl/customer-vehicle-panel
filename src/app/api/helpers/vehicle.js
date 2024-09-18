@@ -49,8 +49,39 @@ export async function addVehicle(customerId, data) {
       status: 200,
       message: "Araç eklendi",
       vehicle: insertResult.recordset,
-    }
+    };
   }
+}
 
-  return result;
+export async function deleteVehicle(vehicleId) {
+  await initializeDatabase();
+
+  const checkVehicleQuery = `
+    USE CustomerVehicleService;
+    SELECT * FROM Vehicles WHERE Id = ${vehicleId};
+  `;
+  const result = await executeQuery(checkVehicleQuery, [
+    { name: "Id", value: vehicleId },
+  ]);
+
+  if (result.recordset.length === 0) {
+    return {
+      success: false,
+      status: 404,
+      message: "Araç bulunamadı",
+    };
+  } else {
+    const deleteVehicleQuery = `
+    USE CustomerVehicleService;
+    DELETE FROM Vehicles WHERE Id = ${vehicleId};
+  `;
+    const deleteResult = await executeQuery(deleteVehicleQuery, [
+      { name: "Id", value: vehicleId },
+    ]);
+    return {
+      success: true,
+      status: 200,
+      message: "Araç silindi",
+    };
+  }
 }

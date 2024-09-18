@@ -58,7 +58,7 @@ export async function getCustomerById(customerId) {
       success: false,
       status: 404,
       message: "Müşteri bulunamadı",
-    };
+    }
   } else {
     return {
       success: true,

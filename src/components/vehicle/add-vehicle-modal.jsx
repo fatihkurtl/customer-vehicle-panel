@@ -39,7 +39,7 @@ export default function AddVehicleModal({ customer, customerId }) {
         });
         // modal.classList.remove("show");
         // modal.style.display = "none";
-        // modal.classList.add("d-none");
+        modal.classList.add("d-none");
         document.body.classList.remove("modal-open");
         const backdrops = document.getElementsByClassName("modal-backdrop");
         while (backdrops.length > 0) {

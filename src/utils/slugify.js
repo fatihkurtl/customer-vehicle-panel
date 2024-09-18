@@ -22,5 +22,5 @@ export function slugify(text) {
     .trim() // İlk ve son boslukları kaldırır
     .replace(/\s+/g, "-") // Boşlukları "-" ile değiştir
     .replace(/-+/g, "-") // Birden fazla "-" işaretini tek "-" yapar
-    .replace(/^-+|-+$/g, ""); // Baş veya sondaki "-" işaretlerini temizler
+    .replace(/^-+|-+$/g, ""); // İlk veya sondaki "-" işaretlerini temizler
 }

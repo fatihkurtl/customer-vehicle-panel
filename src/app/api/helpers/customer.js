@@ -10,7 +10,19 @@ export async function getAllCustomers() {
     ORDER BY c.CreatedAt DESC, c.Id DESC
   `;
   const result = await executeQuery(query);
-  return result.recordset;
+  if (result.recordset.length === 0) {
+    return {
+      success: false,
+      status: 404,
+      message: "HenHenüz kayıtlı bir müşteriniz bulunmamaktadır",
+    };
+  } else {
+    return {
+      success: true,
+      status: 200,
+      customers: result.recordset,
+    };
+  }
 }
 
 export async function addCustomer(fullname) {

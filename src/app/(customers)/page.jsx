@@ -1,14 +1,18 @@
 "use client";
+
 import { useState, useEffect } from "react";
 import { CustomerServices } from "@/helpers/customer";
 import AddCustomerModal from "@/components/customer/add-customer-modal";
 import CustomersTable from "@/components/customer/customers-table";
 import TablePagination from "@/components/customer/table-pagination";
 import { UserPlus } from "lucide-react";
+import TotalCustomersCard from "@/components/customer/total-customers-card";
+import TotalVehiclesCard from "@/components/customer/total-vehicles";
 
 const customerServices = new CustomerServices();
 export default function Home() {
   const [customers, setCustomers] = useState([]);
+  const [totalVehicles, setTotalVehicles] = useState(0);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -31,8 +35,9 @@ export default function Home() {
       setLoading(true);
       const result = await customerServices.getAllCustomers();
       console.log(result);
-      if (result.success) {
-        setCustomers(result.customers);
+      if (result.customers.success) {
+        console.log(result.customers.success);
+        setCustomers(result.customers.customers);
         setLoading(false);
       } else {
         setError(result.message);
@@ -67,6 +72,10 @@ export default function Home() {
   return (
     <div className="container mt-5">
       <AddCustomerModal />
+      <div className="row mb-4">
+        <TotalCustomersCard customersCount={customers.length} />
+        <TotalVehiclesCard totalVehicles={totalVehicles} />
+      </div>
       <div className="d-flex justify-content-between align-items-center mb-4">
         <h1>Müşteri Listesi</h1>
         <button

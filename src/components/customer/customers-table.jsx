@@ -1,9 +1,11 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import Link from "next/link";
+import { Pencil, Trash2, CarFront } from "lucide-react";
 import { CustomerServices } from "@/helpers/customer";
 import { useSwal } from "@/utils/useSwal";
-import { Pencil, Trash2, CarFront } from "lucide-react";
+import { slugify } from "@/utils/slugify";
 
 const customerServices = new CustomerServices();
 
@@ -45,13 +47,16 @@ export default function CustomersTable({ customers }) {
               <td>{new Date(customer.CreatedAt).toLocaleDateString()}</td>
               <td>{customer.FullName}</td>
               <td>
-                <a
-                  href="#"
+                <Link
+                  href={{
+                    pathname: `/${slugify(customer.FullName)}/vehicles`,
+                    query: { customerId: customer.Id },
+                  }}
                   className="btn btn-info btn-sm d-inline-flex align-items-center"
                 >
                   <span className="me-1">Araçlar</span>
                   <CarFront size={16} />
-                </a>
+                </Link>
               </td>
               <td>
                 <div className="d-flex gap-2">

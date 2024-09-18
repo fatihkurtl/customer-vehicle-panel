@@ -19,7 +19,9 @@ export default function AddCustomerModal() {
 
     try {
       console.log(fullname);
-      const response = await customerServices.addCustomer({ fullname: fullname });
+      const response = await customerServices.addCustomer({
+        fullname: fullname,
+      });
       console.log(response.result.success);
       if (!response.result.success) {
         alerts.error("Hata", response.result.message);

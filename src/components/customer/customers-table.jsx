@@ -20,7 +20,13 @@ export default function CustomersTable({ customers }) {
       );
       if (confirmed) {
         console.log("Deleting customer with ID:", id);
-        alerts.success("Başarılı", "Müşteri silindi.");
+        const response = await customerServices.deleteCustomer(id);
+        if (response.result.success) {
+          console.log(response);
+          alerts.success("Başarılı", "Müşteri silindi.");
+        } else {
+          alerts.error("Hata", "Müşteri silinirken bir hata oluştu.");
+        }
       }
     } catch (error) {
       console.log(error);
@@ -29,7 +35,7 @@ export default function CustomersTable({ customers }) {
   };
 
   return (
-    <table className="table table-striped table-hover">
+    <table className="table table-striped table-hover">        
       <thead className="table-dark">
         <tr>
           <th scope="col">#</th>

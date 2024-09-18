@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { getAllCustomers, addCustomer } from "../../helpers/customer";
+import { addCustomer } from "../../helpers/customer";
 
 export async function POST(request) {
   try {

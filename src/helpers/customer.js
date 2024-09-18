@@ -23,4 +23,14 @@ export class CustomerServices {
       throw error;
     }
   }
+
+  async deleteCustomer(customerId) {
+    try {
+      return await api.delete(`${this.ENDPOINT}/delete/${customerId}`);
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
+  }
+  
 }

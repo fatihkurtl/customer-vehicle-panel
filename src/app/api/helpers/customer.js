@@ -46,3 +46,37 @@ export async function addCustomer(fullname) {
     };
   }
 }
+
+export async function deleteCustomer(customerId) {
+  await initializeDatabase();
+
+  const checkCustomer = `
+    USE CustomerVehicleService;
+    SELECT * FROM Customers WHERE Id = ${customerId};
+  `;
+  const result = await executeQuery(checkCustomer, [
+    { name: "Id", value: customerId },
+  ]);
+  if (result.recordset.length === 0) {
+    console.log("Customer not found");
+    return {
+      success: false,
+      status: 404,
+      message: "Müşteri bulunamadı",
+    };
+  } else {
+    const query = `
+    USE CustomerVehicleService;
+    DELETE FROM Customers WHERE Id = ${customerId};
+  `;
+    const result = await executeQuery(query, [
+      { name: "Id", value: customerId },
+    ]);
+
+    return {
+      success: true,
+      status: 200,
+      message: "Müşteri silindi",
+    };
+  }
+}

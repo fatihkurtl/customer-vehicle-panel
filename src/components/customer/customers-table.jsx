@@ -48,7 +48,7 @@ export default function CustomersTable({ customers }) {
       <tbody>
         {customers.length > 0 ? (
           customers.map((customer, index) => (
-            <tr key={customer.Id}>
+            <tr key={index}>
               <th scope="row">{customer.Id}</th>
               <td>{new Date(customer.CreatedAt).toLocaleDateString()}</td>
               <td>{customer.FullName}</td>

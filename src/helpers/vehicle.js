@@ -14,4 +14,13 @@ export class VehicleServices {
       throw error;
     }
   }
+
+  async addVehicle(customerId, data) {
+    try {
+      return await api.post(`${this.ENDPOINT}/add/${customerId}`, data);
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
+  }
 }

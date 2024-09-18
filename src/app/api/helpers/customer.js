@@ -4,10 +4,19 @@ export async function getAllCustomers() {
   await initializeDatabase();
   const query = `
     USE CustomerVehicleService;
-    SELECT c.*, v.Id AS VehicleId
-    FROM Customers c
-    LEFT JOIN Vehicles v ON c.Id = v.CustomerId
-    ORDER BY c.CreatedAt DESC, c.Id DESC
+    SELECT 
+      c.Id,
+      c.FullName,
+      c.CreatedAt,
+      COUNT(v.Id) AS VehicleCount
+    FROM 
+      Customers c
+    LEFT JOIN 
+      Vehicles v ON c.Id = v.CustomerId
+    GROUP BY 
+      c.Id, c.FullName, c.CreatedAt
+    ORDER BY 
+      c.CreatedAt DESC, c.Id DESC
   `;
   const result = await executeQuery(query);
   if (result.recordset.length === 0) {
@@ -49,7 +58,7 @@ export async function getCustomerById(customerId) {
       success: false,
       status: 404,
       message: "Müşteri bulunamadı",
-    }
+    };
   } else {
     return {
       success: true,

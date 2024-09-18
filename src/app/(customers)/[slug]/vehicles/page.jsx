@@ -2,7 +2,8 @@
 import { useState, useEffect } from "react";
 import { useParams, useSearchParams } from "next/navigation";
 import { CustomerServices } from "@/helpers/customer";
-import { CarFront, Trash2, Pencil } from "lucide-react";
+import { CirclePlus, Trash2, Pencil } from "lucide-react";
+import AddVehicleModal from "@/components/vehicle/add-vehicle-modal";
 
 const customerServices = new CustomerServices();
 
@@ -60,6 +61,7 @@ export default function CustomerVehicles() {
 
   return (
     <div className="container mt-5">
+      <AddVehicleModal customer={customer[0].FullName} customerId={customerId} />
       <div className="d-flex justify-content-between align-items-center mb-4">
         <h1>Müşteri Araç Listesi - {customer[0].FullName}</h1>
         {/* <h2>{customer[0].FullName}</h2> */}
@@ -67,11 +69,11 @@ export default function CustomerVehicles() {
         <button
           className="btn btn-primary d-flex align-items-center"
           data-bs-toggle="modal"
-          data-bs-target="#addCustomerModal"
+          data-bs-target="#addVehicleModal"
           data-bs-whatever="@getbootstrap"
         >
           <span className="me-2">Araç Ekle</span>
-          <CarFront size={20} />
+          <CirclePlus size={20} />
         </button>
       </div>
       <table className="table table-striped table-hover">
@@ -81,19 +83,17 @@ export default function CustomerVehicles() {
             <th scope="col">Plaka</th>
             <th scope="col">Marka</th>
             <th scope="col">Model</th>
-            <th scope="col">Yıl</th>
             <th scope="col">İşlemler</th>
           </tr>
         </thead>
         <tbody>
           {vehicles.length > 0 ? (
             vehicles.map((vehicle, index) => (
-              <tr key={vehicle.Id}>
+              <tr key={vehicle.VehicleId}>
                 <th scope="row">{vehicle.Id}</th>
-                <td>{vehicle.LicensePlate}</td>
+                <td>{vehicle.Plate}</td>
                 <td>{vehicle.Brand}</td>
-                <td>{vehicle.Model}</td>
-                <td>{vehicle.Year}</td>
+                <td>{vehicle.ModelYear}</td>
                 <td>
                 <div className="d-flex gap-2">
                   <button className="btn btn-warning btn-sm d-flex align-items-center justify-content-center">

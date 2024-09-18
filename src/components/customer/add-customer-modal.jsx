@@ -27,12 +27,13 @@ export default function AddCustomerModal() {
         alerts.error("Hata", response.result.message);
       } else {
         alerts.success("Başarılı", response.result.message);
-        setFullname("");
         document.getElementById("addCustomerModal").click();
-        window.location.reload();
+        location.href = "/";
       }
     } catch (error) {
       console.error("Error:", error);
+    } finally {
+      setFullname("");
     }
   };
 
@@ -44,7 +45,7 @@ export default function AddCustomerModal() {
       aria-labelledby="addCustomerModalLabel"
       aria-hidden="true"
     >
-      <div className="modal-dialog">
+      <div className="modal-dialog modal-dialog-centered">
         <div className="modal-content">
           <form onSubmit={handleSubmit}>
             <div className="modal-header">

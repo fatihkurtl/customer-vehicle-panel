@@ -14,13 +14,47 @@ export async function getAllCustomers() {
     return {
       success: false,
       status: 404,
-      message: "HenHenüz kayıtlı bir müşteriniz bulunmamaktadır",
+      message: "Henüz kayıtlı bir müşteriniz bulunmamaktadır",
     };
   } else {
     return {
       success: true,
       status: 200,
       customers: result.recordset,
+    };
+  }
+}
+
+export async function getCustomerById(customerId) {
+  await initializeDatabase();
+
+  const query = `
+    USE CustomerVehicleService;
+    SELECT 
+      c.Id AS CustomerId, 
+      c.FullName, 
+      c.CreatedAt,
+      v.Id AS VehicleId,
+      v.Brand,
+      v.Plate,
+      v.ModelYear,
+      v.CreatedAt
+    FROM Customers c
+    LEFT JOIN Vehicles v ON c.Id = v.CustomerId
+    WHERE c.Id = ${customerId}
+  `;
+  const result = await executeQuery(query);
+  if (result.recordset.length === 0) {
+    return {
+      success: false,
+      status: 404,
+      message: "Müşteri bulunamadı",
+    }
+  } else {
+    return {
+      success: true,
+      status: 200,
+      customer: result.recordset,
     };
   }
 }

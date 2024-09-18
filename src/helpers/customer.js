@@ -15,6 +15,15 @@ export class CustomerServices {
     }
   }
 
+  async getCustomerById(customerId) {
+    try {
+      return await api.get(`${this.ENDPOINT}/${customerId}`);
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
+  }
+
   async addCustomer(data) {
     try {
       return await api.post(`${this.ENDPOINT}/add`, data);
@@ -32,5 +41,4 @@ export class CustomerServices {
       throw error;
     }
   }
-  
 }

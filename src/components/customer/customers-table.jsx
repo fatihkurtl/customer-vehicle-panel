@@ -35,7 +35,7 @@ export default function CustomersTable({ customers }) {
   };
 
   return (
-    <table className="table table-striped table-hover">        
+    <table className="table table-striped table-hover">
       <thead className="table-dark">
         <tr>
           <th scope="col">#</th>

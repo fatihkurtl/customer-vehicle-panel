@@ -12,7 +12,6 @@ import TotalVehiclesCard from "@/components/vehicle/total-vehicles-card";
 const customerServices = new CustomerServices();
 export default function Home() {
   const [customers, setCustomers] = useState([]);
-  const [totalVehicles, setTotalVehicles] = useState(0);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -88,7 +87,10 @@ export default function Home() {
           <UserPlus size={20} />
         </button>
       </div>
-      <CustomersTable customers={currentCustomers} fetchCustomers={fetchCustomers} />
+      <CustomersTable
+        customers={currentCustomers}
+        fetchCustomers={fetchCustomers}
+      />
       {customers.length > customersPerPage && (
         <div className="d-flex justify-content-center">
           <TablePagination

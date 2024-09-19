@@ -13,10 +13,14 @@ const customerServices = new CustomerServices();
 export default function CustomersTable({ customers, fetchCustomers }) {
   const alerts = useSwal();
   const [selectedCustomer, setSelectedCustomer] = useState(null);
-  const [customerList, setCustomerList] = useState(customers);
+  const [customerList, setCustomerList] = useState(null);
 
   const modal = document.getElementById("editCustomerModal");
   const backdrops = document.getElementsByClassName("modal-backdrop");
+
+  useEffect(() => {
+    setCustomerList(customers);
+  }, [customers]);
 
   const deleteCustomer = async (id) => {
     try {
@@ -89,7 +93,7 @@ export default function CustomersTable({ customers, fetchCustomers }) {
           </tr>
         </thead>
         <tbody>
-          {customerList.length > 0 ? (
+          {customerList && customerList.length > 0 ? (
             customerList.map((customer, index) => (
               <tr key={index}>
                 <th scope="row">{customer.Id}</th>

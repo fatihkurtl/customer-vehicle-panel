@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useParams, useSearchParams } from "next/navigation";
 import { CustomerServices } from "@/helpers/customer";
 import { CirclePlus, Trash2, Pencil } from "lucide-react";
@@ -17,28 +17,31 @@ export default function CustomerVehicles() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  useEffect(() => {
-    async function fetchCustomer() {
-      if (!customerId) {
-        setLoading(false);
-        return;
-      }
-      try {
-        setLoading(true);
-        const result = await customerServices.getCustomerById(customerId);
-        setCustomer(result.customer);
-        console.log(result.customer);
-        setLoading(false);
-      } catch (error) {
-        console.error(error);
-        setError(error);
-      } finally {
-        setLoading(false);
-      }
+  const fetchCustomer = useCallback(async () => {
+    if (!customerId) {
+      setLoading(false);
+      return;
     }
-
-    fetchCustomer();
+    try {
+      setLoading(true);
+      const result = await customerServices.getCustomerById(customerId);
+      setCustomer(result.customer);
+      setLoading(false);
+    } catch (error) {
+      console.error(error);
+      setError(error);
+    } finally {
+      setLoading(false);
+    }
   }, [customerId]);
+
+  useEffect(() => {
+    fetchCustomer();
+  }, [fetchCustomer]);
+
+  const handleVehicleAdded = () => {
+    fetchCustomer();
+  };
 
   if (loading) {
     return (
@@ -62,7 +65,11 @@ export default function CustomerVehicles() {
 
   return (
     <div className="container mt-5">
-      <AddVehicleModal customer={customer[0].FullName} customerId={customerId} />
+      <AddVehicleModal
+        customer={customer[0].FullName}
+        customerId={customerId}
+        onVehicleAdded={handleVehicleAdded}
+      />
       <div className="d-flex justify-content-between align-items-center mb-4">
         <h1>Müşteri Araç Listesi - {customer[0].FullName}</h1>
         <button

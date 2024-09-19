@@ -5,7 +5,11 @@ import { useSwal } from "@/utils/useSwal";
 
 const vehicleServices = new VehicleServices();
 
-export default function AddVehicleModal({ customer, customerId }) {
+export default function AddVehicleModal({
+  customer,
+  customerId,
+  onVehicleAdded,
+}) {
   const alerts = useSwal();
 
   console.log("customerId:", customerId);
@@ -38,6 +42,7 @@ export default function AddVehicleModal({ customer, customerId }) {
           brand: "",
           modelYear: "",
         });
+        onVehicleAdded();
         modal.classList.add("d-none");
         document.body.classList.remove("modal-open");
         while (backdrops.length > 0) {

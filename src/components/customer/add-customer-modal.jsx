@@ -27,25 +27,30 @@ export default function AddCustomerModal({ fetchCustomers }) {
 
     try {
       // Müşteri ekleme API çağrısı
-      const response = await customerServices.addCustomer({
-        fullname: fullname,
-      });
-      console.log(response.result.success);
-      if (!response.result.success) {
-        // Hata durumunda kullanıcıya API'den donen bilgiyi veriyor
-        alerts.error("Hata", response.result.message);
-      } else {
-        // Başarılı durumda kullanıcıya API'den bilgi veriyor
-        alerts.success("Başarılı", response.result.message);
-        // Musteri listesini yenileniyor
-        fetchCustomers();
-        // Modal kapatılıyor
-        document.getElementById("addCustomerModal").click();
-        modal.classList.add("d-none");
-        document.body.classList.remove("modal-open");
-        while (backdrops.length > 0) {
-          backdrops[0].parentNode.removeChild(backdrops[0]);
+      if (fullname !== "") {
+        const response = await customerServices.addCustomer({
+          fullname: fullname,
+        });
+        console.log(response.result.success);
+        if (!response.result.success) {
+          // Hata durumunda kullanıcıya API'den donen bilgiyi veriyor
+          alerts.error("Hata", response.result.message);
+        } else {
+          // Başarılı durumda kullanıcıya API'den bilgi veriyor
+          alerts.success("Başarılı", response.result.message);
+          // Musteri listesini yenileniyor
+          fetchCustomers();
+          // Modal kapatılıyor
+          document.getElementById("addCustomerModal").click();
+          modal.classList.add("d-none");
+          document.body.classList.remove("modal-open");
+          while (backdrops.length > 0) {
+            backdrops[0].parentNode.removeChild(backdrops[0]);
+          }
         }
+      } else {
+        // Hata durumunda kullanıcıya bilgi veriyor
+        alerts.error("Hata", "Lütfen müşteri adını giriniz");
       }
     } catch (error) {
       console.error("Error:", error);

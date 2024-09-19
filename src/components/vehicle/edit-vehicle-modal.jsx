@@ -8,7 +8,7 @@ import { useSwal } from "@/utils/useSwal";
 const vehicleServices = new VehicleServices();
 
 export default function EditVehicleModal({ vehicle, onUpdated }) {
-    // Sweet Alert kullanımı utils/useSwal.ts
+  // Sweet Alert kullanımı utils/useSwal.ts
   const alerts = useSwal();
   // Duzenlenen arac bilgilerini tutan state
   const [editedVehicle, setEditedVehicle] = useState({
@@ -37,6 +37,15 @@ export default function EditVehicleModal({ vehicle, onUpdated }) {
   // form gonderildiginde calisir
   const handleSubmit = async (e) => {
     e.preventDefault();
+    // eger arac bilgileri doldurulmadiysa hata mesaji verir
+    if (
+      editedVehicle.plate === "" ||
+      editedVehicle.brand === "" ||
+      editedVehicle.modelYear === ""
+    ) {
+      alerts.error("Hata", "Tüm alanlar doldurulmalıdır");
+      return;
+    } 
 
     // Guncellenmis arac nesnesi olusturuluyor
     const updatedVehicle = {

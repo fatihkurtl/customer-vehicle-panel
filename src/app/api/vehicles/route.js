@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { getAllVehicles } from "../helpers/vehicle";
 
+// Tum arac bilgilerini getiren fonksiyon
 export async function GET(request) {
   try {
     const vehicles = await getAllVehicles();

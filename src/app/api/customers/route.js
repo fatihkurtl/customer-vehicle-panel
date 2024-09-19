@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { getAllCustomers } from "../helpers/customer";
 
+// Tum musterileri getiren metod
 export async function GET() {
   try {
     const customers = await getAllCustomers();

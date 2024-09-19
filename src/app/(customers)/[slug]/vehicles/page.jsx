@@ -27,6 +27,7 @@ export default function CustomerVehicles() {
     }
     try {
       setLoading(true);
+      // Muşteri bilgilerini alıyor /api/customers/customerId / helpers/customer.js
       const result = await customerServices.getCustomerById(customerId);
       setCustomer(result.customer);
       setLoading(false);

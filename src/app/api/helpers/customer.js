@@ -1,5 +1,8 @@
 import { initializeDatabase, executeQuery } from "@/app/lib/db";
 
+// Musteriler için Temel fonksiyonlar / veritabani işlemleri 
+
+// Tüm müşterileri getiren fonksiyon
 export async function getAllCustomers() {
   await initializeDatabase();
   const query = `
@@ -19,6 +22,7 @@ export async function getAllCustomers() {
       c.CreatedAt DESC, c.Id DESC
   `;
   const result = await executeQuery(query);
+  // Müşteri yoksa hata döndürür, varsa müşteri listesini döndürür
   if (result.recordset.length === 0) {
     return {
       success: false,
@@ -34,6 +38,7 @@ export async function getAllCustomers() {
   }
 }
 
+// Belirli bir müşteriyi getiren fonksiyon / ID ile
 export async function getCustomerById(customerId) {
   await initializeDatabase();
 
@@ -53,6 +58,7 @@ export async function getCustomerById(customerId) {
     WHERE c.Id = ${customerId}
   `;
   const result = await executeQuery(query);
+  // Müşteri bulunamazsa hata döndürür, bulunursa müşteri bilgilerini döndürür
   if (result.recordset.length === 0) {
     return {
       success: false,
@@ -68,9 +74,11 @@ export async function getCustomerById(customerId) {
   }
 }
 
+// Yeni müşteri ekleyen fonksiyon
 export async function addCustomer(fullname) {
   await initializeDatabase();
   console.log(fullname);
+  // Aynı isimde müşteri var mı diye kontrol eder
   const checkQuery = `
     USE CustomerVehicleService;
     SELECT * FROM Customers WHERE FullName = '${fullname}';
@@ -87,6 +95,7 @@ export async function addCustomer(fullname) {
       message: "Bu isimde bir müşteri zaten var",
     };
   } else {
+    // Yeni müşteriyi ekleyen sorgu
     const insertCustomer = `
     USE CustomerVehicleService;
     INSERT INTO Customers (FullName) VALUES ('${fullname}');  
@@ -102,9 +111,11 @@ export async function addCustomer(fullname) {
   }
 }
 
+// Muşteriyi silen fonksiyon
 export async function deleteCustomer(customerId) {
   await initializeDatabase();
 
+  // Müşterinin var olup olmadığını kontrol eder
   const checkCustomer = `
     USE CustomerVehicleService;
     SELECT * FROM Customers WHERE Id = ${customerId};
@@ -120,6 +131,7 @@ export async function deleteCustomer(customerId) {
       message: "Müşteri bulunamadı",
     };
   } else {
+    // Müşteriyi silen sorgu
     const query = `
     USE CustomerVehicleService;
     DELETE FROM Customers WHERE Id = ${customerId};
@@ -136,9 +148,11 @@ export async function deleteCustomer(customerId) {
   }
 }
 
+// Müşteri bilgilerini güncelleyen fonksiyon / ID ile
 export async function editCustomer(customerId, fullname) {
   await initializeDatabase();
 
+  // Müşterinin var olup olmadığını kontrol eder
   const checkCustomerQuery = `
     USE CustomerVehicleService;
     SELECT * FROM Customers WHERE Id = ${customerId};
@@ -162,6 +176,7 @@ export async function editCustomer(customerId, fullname) {
       message: "Bu isimle bir müşteri zaten var",
     };
   } else {
+    // Müşteri bilgilerini günceller
     const query = `
     USE CustomerVehicleService;
     UPDATE Customers SET FullName = '${fullname}' WHERE Id = ${customerId};

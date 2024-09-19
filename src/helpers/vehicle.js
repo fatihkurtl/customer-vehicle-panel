@@ -32,4 +32,13 @@ export class VehicleServices {
       throw error;
     }
   }
+
+  async editVehicle(vehicleId, data) {
+    try {
+      return await api.put(`${this.ENDPOINT}/edit/${vehicleId}`, data);
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
+  }
 }

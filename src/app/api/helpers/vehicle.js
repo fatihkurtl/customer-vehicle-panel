@@ -85,3 +85,37 @@ export async function deleteVehicle(vehicleId) {
     };
   }
 }
+
+export async function editVehicle(vehicleId, data) {
+  await initializeDatabase();
+
+  const checkVehicleQuery = `
+    USE CustomerVehicleService;
+    SELECT * FROM Vehicles WHERE Id = ${vehicleId};
+  `;
+
+  const checkVehicleResult = await executeQuery(checkVehicleQuery, [
+    { name: "Id", value: vehicleId },
+  ]);
+
+  if (checkVehicleResult.recordset.length === 0) {
+    return {
+      success: false,
+      status: 404,
+      message: "Araç bulunamadı",
+    };
+  } else {
+    const updateVehicleQuery = `
+    USE CustomerVehicleService;
+    UPDATE Vehicles SET Brand = '${data.brand}', Plate = '${data.plate}', ModelYear = ${data.modelYear} WHERE Id = ${vehicleId};
+  `;
+    const updateResult = await executeQuery(updateVehicleQuery, [
+      { name: "Id", value: vehicleId },
+    ]);
+    return {
+      success: true,
+      status: 200,
+      message: "Araç bilgileri güncellendi",
+    };
+  }
+}

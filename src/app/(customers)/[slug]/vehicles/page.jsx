@@ -68,7 +68,7 @@ export default function CustomerVehicles() {
       <AddVehicleModal
         customer={customer[0].FullName}
         customerId={customerId}
-        onVehicleAdded={handleVehicleAdded}
+        onVehicleAdded={handleVehicleAdded}        
       />
       <div className="d-flex justify-content-between align-items-center mb-4">
         <h1>Müşteri Araç Listesi - {customer[0].FullName}</h1>
@@ -82,7 +82,7 @@ export default function CustomerVehicles() {
           <CirclePlus size={20} />
         </button>
       </div>
-      <VehiclesTable vehicles={vehicles} />
+      <VehiclesTable vehicles={vehicles} fetchCustomer={fetchCustomer} />
     </div>
   );
 }

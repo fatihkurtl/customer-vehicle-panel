@@ -25,6 +25,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable} d-flex flex-column min-vh-100`}>
+        {/* Bootstrap Calismasi icin import edildi */}
         <BootstrapClient />
         <Navbar />
         <main className="flex-grow-1">{children}</main>

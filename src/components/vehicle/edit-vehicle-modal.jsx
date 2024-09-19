@@ -4,16 +4,20 @@ import { useState, useEffect } from "react";
 import { VehicleServices } from "@/helpers/vehicle";
 import { useSwal } from "@/utils/useSwal";
 
+// VehicleServices sınıfını başlatıyor
 const vehicleServices = new VehicleServices();
 
 export default function EditVehicleModal({ vehicle, onUpdated }) {
+    // Sweet Alert kullanımı utils/useSwal.ts
   const alerts = useSwal();
+  // Duzenlenen arac bilgilerini tutan state
   const [editedVehicle, setEditedVehicle] = useState({
     plate: "",
     brand: "",
     modelYear: "",
   });
 
+  // Input degeri degistiginde state'i guncelliyor
   useEffect(() => {
     if (vehicle) {
       setEditedVehicle({
@@ -24,14 +28,17 @@ export default function EditVehicleModal({ vehicle, onUpdated }) {
     }
   }, [vehicle]);
 
+  // Input degeri degistiginde state'i guncelliyor
   const handleChange = (e) => {
     const { name, value } = e.target;
     setEditedVehicle((prev) => ({ ...prev, [name]: value }));
   };
 
+  // form gonderildiginde calisir
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    // Guncellenmis arac nesnesi olusturuluyor
     const updatedVehicle = {
       ...editedVehicle,
       id: vehicle.VehicleId,
@@ -43,6 +50,7 @@ export default function EditVehicleModal({ vehicle, onUpdated }) {
       "Araç güncellenecektir. Onaylıyor musunuz?"
     );
 
+    // eger yukarıda acilan alert onaylanırsa aracı guncellemek icin asagidaki fonksiyonu calistirir
     if (confirmed) {
       await onUpdated(updatedVehicle);
     }

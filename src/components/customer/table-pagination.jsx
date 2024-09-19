@@ -8,8 +8,10 @@ export default function TablePagination({
   paginate,
   currentPage,
 }) {
+  // Toplam sayfa sayısını hesaplıyor
   const pageNumbers = [];
 
+  // Sayfa numaralarını oluşturuyor
   for (let i = 1; i <= Math.ceil(totalCustomers / customersPerPage); i++) {
     pageNumbers.push(i);
   }
@@ -17,12 +19,15 @@ export default function TablePagination({
   return (
     <nav>
       <ul className="pagination">
+        {/* Her sayfa numarası için bir liste öğesi oluşturuyor */}
         {pageNumbers.map((number) => (
           <li
             key={number}
             className={`page-item ${currentPage === number ? "active" : ""}`}
           >
-            <a onClick={() => paginate(number)} href="#!" className="page-link">
+            <a 
+            // Sayfa numarasına tıklandığında paginate fonksiyonunu çağırıyor
+            onClick={() => paginate(number)} href="#!" className="page-link">
               {number}
             </a>
           </li>

@@ -1,7 +1,9 @@
 import Swal from "sweetalert2";
 import "sweetalert2/src/sweetalert2.scss";
 
+// Sweet Alert kullanımı
 export function useSwal() {
+  // Onay alert
   const success = (title, text) => {
     Swal.fire({
       title: title,
@@ -12,6 +14,7 @@ export function useSwal() {
     });
   };
 
+  // Hata alert
   const error = (title, text) => {
     Swal.fire({
       title: title,
@@ -22,6 +25,7 @@ export function useSwal() {
     });
   };
 
+  // Soru alert, (Onay, Hayır), Duruma gore deger boolean (true, false) dondurur
   const question = (title, text) => {
     return new Promise((resolve) => {
       Swal.fire({
@@ -36,6 +40,7 @@ export function useSwal() {
     });
   };
 
+  // alertleri export ediyor
   return {
     success,
     error,

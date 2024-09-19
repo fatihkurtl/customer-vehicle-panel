@@ -1,6 +1,7 @@
 // https://fatihkurt.web.tr/blog/nextjs-ve-slugify-kullanm-urlleri-seo-dostu-hale-getirin/
 
 export function slugify(text) {
+  // Turkce karakterler
   const turkishChars = {
     ı: "i",
     ğ: "g",

@@ -3,6 +3,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { Users, Car } from "lucide-react";
 
+// App geneli icin layot.jsx de kullanilan navbar
 export default function Navbar() {
   return (
     <nav className="navbar navbar-expand-lg navbar-light bg-white border-bottom shadow-sm">

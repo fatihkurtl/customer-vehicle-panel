@@ -1,5 +1,6 @@
 import { Users } from "lucide-react";
 
+// Toplam musteri sayisini gosteren musteri karti
 export default function TotalCustomersCard({ customersCount }) {
   return (
     <div className="col-md-3">

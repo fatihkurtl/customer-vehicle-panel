@@ -4,9 +4,10 @@ import { useState, useEffect } from "react";
 import { Car } from "lucide-react";
 
 export default function TotalVehiclesCard({ totalVehicles }) {
-
+  // toplam arac sayisini tutan state
   const [vehiclesCount, setVehiclesCount] = useState(0);
 
+  // totalVehicles prop'u degeri degistiginde state'i guncelliyor
   useEffect(() => {
     let count = 0;
     for (let i = 0; i < totalVehicles.length; i++) {
@@ -23,7 +24,7 @@ export default function TotalVehiclesCard({ totalVehicles }) {
           <div>
             <h5 className="card-title mb-0">Toplam Araç</h5>
             <p className="card-text fs-4 fw-bold text-success mb-0">
-             {vehiclesCount}
+              {vehiclesCount}
             </p>
           </div>
         </div>

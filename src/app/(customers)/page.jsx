@@ -9,12 +9,15 @@ import { UserPlus } from "lucide-react";
 import TotalCustomersCard from "@/components/customer/total-customers-card";
 import TotalVehiclesCard from "@/components/vehicle/total-vehicles-card";
 
+// CustomerServices sinifini baslatiyor
 const customerServices = new CustomerServices();
 export default function Home() {
+  // Müşteri listesi, yükleme durumu ve hata durumu için state'ler
   const [customers, setCustomers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  // Sayfalama için state ve hesaplamalar
   const [currentPage, setCurrentPage] = useState(1);
   const customersPerPage = 10;
   const indexOfLastCustomer = currentPage * customersPerPage;
@@ -25,21 +28,27 @@ export default function Home() {
   );
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
+  // Verileri yüklemek için useEffect
   useEffect(() => {
     fetchCustomers();
   }, []);
 
+  // Verileri yüklemek için olan fonksiyon
   const fetchCustomers = async () => {
     try {
+      // Yükleniyor state'ini aktif ediyor
       setLoading(true);
+      // Müşterileri alıyor
       const result = await customerServices.getAllCustomers();
       console.log(result);
       if (result.customers.success) {
         console.log(result.customers.success);
         setCustomers(result.customers.customers);
+        // Yukleniyor state'ini kapatıyor
         setLoading(false);
       } else {
         setError(result.message);
+        // Yukleniyor state'ini kapatıyor
         setLoading(false);
       }
     } catch (error) {
@@ -50,6 +59,7 @@ export default function Home() {
     }
   };
 
+  // Yükleme durumunda gösterilecek içerik
   if (loading) {
     return (
       <div className="container mt-5">
@@ -59,6 +69,7 @@ export default function Home() {
     );
   }
 
+  // Hata durumunda gösterilecek içerik
   if (error) {
     return (
       <div className="container mt-5">
@@ -67,7 +78,7 @@ export default function Home() {
       </div>
     );
   }
-
+  // Müşteriler sayfası
   return (
     <div className="container mt-5">
       <AddCustomerModal fetchCustomers={fetchCustomers} />

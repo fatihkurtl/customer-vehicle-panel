@@ -10,19 +10,24 @@ import EditVehicleModal from "./edit-vehicle-modal";
 const vehicleServices = new VehicleServices();
 
 export default function VehiclesTable({ vehicles, fetchCustomer }) {
+    // useSwal aler icin utils/useSwal.ts
   const alerts = useSwal();
   const [selectedVehicle, setSelectedVehicle] = useState([]);
 
+  // edit modalı daha sonra kapatmak icin id ve class olarak tanımlanır
   const modal = document.getElementById("editVehicleModal");
   const backdrops = document.getElementsByClassName("modal-backdrop");
 
+  // arac siler
   const deleteVehicle = async (id) => {
     try {
-      const confirmed = await alerts.question(
-        "Emin misiniz?",
-        "Araç silinecektir. Onaylıyor musunuz?"
-      );
+        const confirmed = await alerts.question(
+            "Emin misiniz?",
+            "Araç silinecektir. Onaylıyor musunuz?"
+        );
+        // eger yukarıda acilan alert onaylanırsa aracı silmek icin asagidaki fonksiyonu calistirir
       if (confirmed) {
+        // helpers/vehicle.js'deki deleteVehicle fonksiyonu
         const response = await vehicleServices.deleteVehicle(id);
         console.log(response);
         if (response.result.success) {
@@ -39,6 +44,7 @@ export default function VehiclesTable({ vehicles, fetchCustomer }) {
     }
   };
 
+  // edit edilen aracı yakalar
   const handleEditeVehicle = (vehicle) => {
     console.log(vehicle);
     setSelectedVehicle(vehicle);
@@ -48,6 +54,7 @@ export default function VehiclesTable({ vehicles, fetchCustomer }) {
   const updateVehicle = async (updatedVehicle) => {
     console.log("Updated vehicle:", updatedVehicle.id);
     try {
+        // helpers/vehicle.js'deki editVehicle fonksiyonu
       const response = await vehicleServices.editVehicle(
         updatedVehicle.id,
         updatedVehicle
@@ -55,7 +62,10 @@ export default function VehiclesTable({ vehicles, fetchCustomer }) {
       console.log("API response:", response);
       if (response.result.success) {
         alerts.success("Başarılı", response.result.message);
+        // degisiklik yapildiginde arac listesini yeniler 
         fetchCustomer();
+
+        // edit vehicle modalunu kapatır
         modal.classList.add("d-none");
         document.body.classList.remove("modal-open");
         while (backdrops.length > 0) {
@@ -72,6 +82,7 @@ export default function VehiclesTable({ vehicles, fetchCustomer }) {
 
   return (
     <>
+    {/* edit vehicle modalı */}
       <EditVehicleModal vehicle={selectedVehicle} onUpdated={updateVehicle} />
       <table className="table table-striped table-hover">
         <thead className="table-dark">
@@ -115,6 +126,7 @@ export default function VehiclesTable({ vehicles, fetchCustomer }) {
               </tr>
             ))
           ) : (
+            // Müşteriye ait kayıtlı bir araç yoksa ekrana gosterilir
             <tr>
               <td className="text-center" colSpan="6">
                 <p className="mb-0 text-muted font-italic">

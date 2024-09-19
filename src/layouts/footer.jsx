@@ -1,3 +1,4 @@
+// App geneli icin layot.jsx de kullanilan footer
 export default function Footer() {
     return (
       <footer className="bg-light py-3 mt-4 mt-auto">

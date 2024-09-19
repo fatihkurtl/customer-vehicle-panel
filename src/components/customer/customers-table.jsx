@@ -8,32 +8,41 @@ import { useSwal } from "@/utils/useSwal";
 import { slugify } from "@/utils/slugify";
 import EditCustomerModal from "./edit-customer-modal";
 
+// CustomerServices sınıfını başlatıyor, bu sınıf müşteri işlemleri için API çağrıları yapıyor
 const customerServices = new CustomerServices();
 
 export default function CustomersTable({ customers, fetchCustomers }) {
+  // Sweet Alert kullanımı utils/useSwal.ts
   const alerts = useSwal();
   const [selectedCustomer, setSelectedCustomer] = useState(null);
   const [customerList, setCustomerList] = useState(null);
 
+  // Modal elementi seciliyor
   const modal = document.getElementById("editCustomerModal");
   const backdrops = document.getElementsByClassName("modal-backdrop");
 
+  // Input degeri degistiginde state'i guncelliyor
   useEffect(() => {
     setCustomerList(customers);
   }, [customers]);
 
+  // Musteri silme fonksiyonu
   const deleteCustomer = async (id) => {
     try {
       const confirmed = await alerts.question(
         "Emin misiniz?",
         "Müşteri silinecektir. Onaylıyor musunuz?"
       );
+
+      // eger yukarıda acilan alert onaylanırsa aracı silmek icin asagidaki fonksiyonu calistirir
       if (confirmed) {
         console.log("Deleting customer with ID:", id);
         const response = await customerServices.deleteCustomer(id);
         if (response.result.success) {
           console.log(response);
+          // Silme islemi basariliysa, utils/useSwal.ts'den success alerti veriyor
           alerts.success("Başarılı", "Müşteri silindi.");
+          // Musteri listesini yenileniyor, silinen musteriyi filtreliyor
           setCustomerList(customerList.filter((customer) => customer.Id !== id));
         } else {
           alerts.error("Hata", "Müşteri silinirken bir hata oluştu.");
@@ -45,13 +54,16 @@ export default function CustomersTable({ customers, fetchCustomers }) {
     }
   };
 
+  // Edit olacak musteri bilgilerini state'e aktaracak fonksiyon
   const handleEditCustomer = (customer) => {
     setSelectedCustomer(customer);
   };
 
+  // API servis kullanarak musteri bilgilerini update edecek fonksiyon
   const updateCustomer = async (updatedCustomer) => {
     console.log("Updated customer:", updatedCustomer);
     try {
+      // helpers/customer.js'deki editCustomer fonksiyonu
       const response = await customerServices.editCustomer(
         updatedCustomer.Id,
         updatedCustomer
@@ -59,8 +71,11 @@ export default function CustomersTable({ customers, fetchCustomers }) {
       console.log(response);
       if (response.result.success) {
         console.log(response);
+        // Islem basarili ise utils/useSwal.ts'den success alerti veriyor
         alerts.success("Başarılı", response.result.message);
+        // Musteri listesini yenileniyor
         fetchCustomers();
+        // Modal kapatiliyor
         modal.classList.add("d-none");
         document.body.classList.remove("modal-open");
         while (backdrops.length > 0) {

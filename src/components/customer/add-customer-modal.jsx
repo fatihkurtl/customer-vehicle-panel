@@ -3,34 +3,43 @@ import { useState } from "react";
 import { CustomerServices } from "@/helpers/customer";
 import { useSwal } from "@/utils/useSwal";
 
+// CustomerServices sınıfını başlatıyor, bu sınıf müşteri işlemleri için API çağrıları yapıyor
 const customerServices = new CustomerServices();
 
 export default function AddCustomerModal({ fetchCustomers }) {
   const [fullname, setFullname] = useState("");
 
+  // Sweet Alert kullanımı utils/useSwal.ts
   const alerts = useSwal();
 
+  // Modal elementi seciliyor
   const modal = document.getElementById("addCustomerModal");
   const backdrops = document.getElementsByClassName("modal-backdrop");
 
+  // Input degeri degistiginde state'i guncelliyor
   const handleChange = (e) => {
     setFullname(e.target.value);
   };
 
+  // Form gönderildiğinde çalışacak fonksiyon
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
-      console.log(fullname);
+      // Müşteri ekleme API çağrısı
       const response = await customerServices.addCustomer({
         fullname: fullname,
       });
       console.log(response.result.success);
       if (!response.result.success) {
+        // Hata durumunda kullanıcıya API'den donen bilgiyi veriyor
         alerts.error("Hata", response.result.message);
       } else {
+        // Başarılı durumda kullanıcıya API'den bilgi veriyor
         alerts.success("Başarılı", response.result.message);
+        // Musteri listesini yenileniyor
         fetchCustomers();
+        // Modal kapatılıyor
         document.getElementById("addCustomerModal").click();
         modal.classList.add("d-none");
         document.body.classList.remove("modal-open");

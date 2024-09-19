@@ -1,26 +1,30 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { CustomerServices } from "@/helpers/customer";
 import { useSwal } from "@/utils/useSwal";
 
 export default function EditCustomerModal({ customer, onUpdated }) {
+  // Sweet Alert kullanımı utils/useSwal.ts
   const alerts = useSwal();
   const [fullname, setFullname] = useState("");
 
+  // Input degeri degistiginde state'i guncelliyor
   useEffect(() => {
     if (customer) {
       setFullname(customer.FullName);
     }
   }, [customer]);
 
+  // Fullname degeri degistiginde state'i guncelliyor
   const handleChange = (e) => {
     setFullname(e.target.value);
   };
 
+  // Form gönderildiğinde çalışacak fonksiyon
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    // Guncellenmis musteri nesnesi olusturuluyor
     const updatedCustomer = { ...customer, fullname: fullname };
 
     const confirmed = await alerts.question(
@@ -28,6 +32,7 @@ export default function EditCustomerModal({ customer, onUpdated }) {
       "Müşteri güncellenecektir. Onaylıyor musunuz?"
     );
 
+    // Kullanıcı onaylarsa, güncelleme işlemini gerçekleştiriyor
     if (confirmed) {
       await onUpdated(updatedCustomer);
     }

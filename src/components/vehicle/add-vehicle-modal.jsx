@@ -14,35 +14,43 @@ export default function AddVehicleModal({
 
   console.log("customerId:", customerId);
 
+  // Araç bilgilerini tutan state
   const [vehicle, setVehicle] = useState({
     plate: "",
     brand: "",
     modelYear: "",
   });
 
+  // Input değerleri değiştiğinde state'i günceller
   const handleChange = (e) => {
     const { name, value } = e.target;
     setVehicle({ ...vehicle, [name]: value });
   };
 
+  // modal elementini secer
   const modal = document.getElementById("addVehicleModal");
   const backdrops = document.getElementsByClassName("modal-backdrop");
 
+
+  // form gonderildiginde calisir
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
       console.log(vehicle);
+      // Araç ekleme API istegi
       const response = await vehicleServices.addVehicle(customerId, vehicle);
       console.log(response);
       if (response.result.success) {
         alerts.success("Başarılı", response.result.message);
+        // form alanlarını temizler
         setVehicle({
           plate: "",
           brand: "",
           modelYear: "",
         });
         onVehicleAdded();
+        // modal kapatılıyor
         modal.classList.add("d-none");
         document.body.classList.remove("modal-open");
         while (backdrops.length > 0) {

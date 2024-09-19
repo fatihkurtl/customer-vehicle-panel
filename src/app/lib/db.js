@@ -51,8 +51,7 @@ export async function createCustomersTable() {
 
 export async function createVehiclesTable() {
   const query = `
-    USE CustomerVehicleService;
-    IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='Vehicles' and xtype='U')
+    IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='Vehicles' AND xtype='U')
     BEGIN
         CREATE TABLE Vehicles (
             Id INT IDENTITY(1,1) PRIMARY KEY,
@@ -61,12 +60,14 @@ export async function createVehiclesTable() {
             Plate NVARCHAR(20) NOT NULL UNIQUE,
             ModelYear INT NOT NULL,
             CreatedAt DATETIME2 DEFAULT GETDATE(),
-            FOREIGN KEY (CustomerId) REFERENCES Customers(Id)
+            CONSTRAINT FK_Vehicles_Customers FOREIGN KEY (CustomerId) 
+            REFERENCES Customers(Id) ON DELETE CASCADE
         );
     END
   `;
   await executeQuery(query);
 }
+
 
 export async function initializeDatabase() {
   await createDatabase();

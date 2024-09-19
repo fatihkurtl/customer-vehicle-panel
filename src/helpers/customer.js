@@ -41,4 +41,13 @@ export class CustomerServices {
       throw error;
     }
   }
+
+  async editCustomer(customerId, data) {
+    try {
+      return await api.put(`${this.ENDPOINT}/edit/${customerId}`, data);
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
+  }
 }

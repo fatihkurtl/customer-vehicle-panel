@@ -58,7 +58,7 @@ export async function getCustomerById(customerId) {
       success: false,
       status: 404,
       message: "Müşteri bulunamadı",
-    }
+    };
   } else {
     return {
       success: true,
@@ -132,6 +132,49 @@ export async function deleteCustomer(customerId) {
       success: true,
       status: 200,
       message: "Müşteri silindi",
+    };
+  }
+}
+
+export async function editCustomer(customerId, fullname) {
+  await initializeDatabase();
+
+  const checkCustomerQuery = `
+    USE CustomerVehicleService;
+    SELECT * FROM Customers WHERE Id = ${customerId};
+  `;
+
+  const checkCustomerResult = await executeQuery(checkCustomerQuery, [
+    { name: "Id", value: customerId },
+  ]);
+
+  if (checkCustomerResult.recordset.length === 0) {
+    return {
+      success: false,
+      status: 404,
+      message: "Müşteri bulunamadı",
+    };
+  } else if (checkCustomerResult.recordset[0].FullName === fullname) {
+    console.log("Customer already exists");
+    return {
+      success: false,
+      status: 400,
+      message: "Bu isimle bir müşteri zaten var",
+    };
+  } else {
+    const query = `
+    USE CustomerVehicleService;
+    UPDATE Customers SET FullName = '${fullname}' WHERE Id = ${customerId};
+  `;
+    const result = await executeQuery(query, [
+      { name: "Id", value: customerId },
+      { name: "FullName", value: fullname },
+    ]);
+
+    return {
+      success: true,
+      status: 200,
+      message: "Müşteri bilgileri güncellendi",
     };
   }
 }

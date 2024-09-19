@@ -7,7 +7,7 @@ import CustomersTable from "@/components/customer/customers-table";
 import TablePagination from "@/components/customer/table-pagination";
 import { UserPlus } from "lucide-react";
 import TotalCustomersCard from "@/components/customer/total-customers-card";
-import TotalVehiclesCard from "@/components/customer/total-vehicles";
+import TotalVehiclesCard from "@/components/vehicle/total-vehicles-card";
 
 const customerServices = new CustomerServices();
 export default function Home() {
@@ -71,7 +71,7 @@ export default function Home() {
 
   return (
     <div className="container mt-5">
-      <AddCustomerModal />
+      <AddCustomerModal fetchCustomers={fetchCustomers} />
       <div className="row mb-4">
         <TotalCustomersCard customersCount={customers.length} />
         <TotalVehiclesCard totalVehicles={customers} />
@@ -88,7 +88,7 @@ export default function Home() {
           <UserPlus size={20} />
         </button>
       </div>
-      <CustomersTable customers={currentCustomers} />
+      <CustomersTable customers={currentCustomers} fetchCustomers={fetchCustomers} />
       {customers.length > customersPerPage && (
         <div className="d-flex justify-content-center">
           <TablePagination

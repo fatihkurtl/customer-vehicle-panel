@@ -31,6 +31,10 @@ export default function VehiclesTable({ vehicles }) {
     }
   };
 
+  const editVehicle = (vehicle) => {
+    console.log(vehicle);
+  };
+
   return (
     <table className="table table-striped table-hover">
       <thead className="table-dark">
@@ -52,7 +56,10 @@ export default function VehiclesTable({ vehicles }) {
               <td>{vehicle.ModelYear}</td>
               <td>
                 <div className="d-flex gap-2">
-                  <button className="btn btn-warning btn-sm d-flex align-items-center justify-content-center">
+                  <button
+                    onClick={() => editVehicle(vehicle)}
+                    className="btn btn-warning btn-sm d-flex align-items-center justify-content-center"
+                  >
                     <span className="me-1">Düzenle</span>
                     <Pencil size={16} />
                   </button>
@@ -70,7 +77,9 @@ export default function VehiclesTable({ vehicles }) {
         ) : (
           <tr>
             <td className="text-center" colSpan="6">
-              Müşteriye kayıtlı bir araç bulunmamaktadır.
+              <p className="mb-0 text-muted font-italic">
+                Müşteriye ait kayıtlı bir araç bulunmamaktadır.
+              </p>
             </td>
           </tr>
         )}

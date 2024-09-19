@@ -1,17 +1,18 @@
 "use client";
-import { useState } from "react";
+
+import { useState, useEffect } from "react";
 import { CustomerServices } from "@/helpers/customer";
 import { useSwal } from "@/utils/useSwal";
 
-const customerServices = new CustomerServices();
-
-export default function AddCustomerModal({ fetchCustomers }) {
+export default function EditCustomerModal({ customer, onUpdated }) {
+  const alerts = useSwal();
   const [fullname, setFullname] = useState("");
 
-  const alerts = useSwal();
-
-  const modal = document.getElementById("addCustomerModal");
-  const backdrops = document.getElementsByClassName("modal-backdrop");
+  useEffect(() => {
+    if (customer) {
+      setFullname(customer.FullName);
+    }
+  }, [customer]);
 
   const handleChange = (e) => {
     setFullname(e.target.value);
@@ -20,45 +21,32 @@ export default function AddCustomerModal({ fetchCustomers }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    try {
-      console.log(fullname);
-      const response = await customerServices.addCustomer({
-        fullname: fullname,
-      });
-      console.log(response.result.success);
-      if (!response.result.success) {
-        alerts.error("Hata", response.result.message);
-      } else {
-        alerts.success("Başarılı", response.result.message);
-        fetchCustomers();
-        document.getElementById("addCustomerModal").click();
-        modal.classList.add("d-none");
-        document.body.classList.remove("modal-open");
-        while (backdrops.length > 0) {
-          backdrops[0].parentNode.removeChild(backdrops[0]);
-        }
-      }
-    } catch (error) {
-      console.error("Error:", error);
-    } finally {
-      setFullname("");
+    const updatedCustomer = { ...customer, fullname: fullname };
+
+    const confirmed = await alerts.question(
+      "Emin misiniz?",
+      "Müşteri güncellenecektir. Onaylıyor musunuz?"
+    );
+
+    if (confirmed) {
+      await onUpdated(updatedCustomer);
     }
   };
 
   return (
     <div
       className="modal fade"
-      id="addCustomerModal"
+      id="editCustomerModal"
       tabIndex="-1"
-      aria-labelledby="addCustomerModalLabel"
+      aria-labelledby="editCustomerModalLabel"
       aria-hidden="true"
     >
       <div className="modal-dialog modal-dialog-centered">
         <div className="modal-content">
           <form onSubmit={handleSubmit}>
             <div className="modal-header">
-              <h1 className="modal-title fs-5" id="addCustomerModalLabel">
-                Yeni Müşteri Ekle
+              <h1 className="modal-title fs-5" id="editCustomerModalLabel">
+                Müşteri Düzenle
               </h1>
               <button
                 type="button"
@@ -92,7 +80,7 @@ export default function AddCustomerModal({ fetchCustomers }) {
                 Kapat
               </button>
               <button type="submit" className="btn btn-primary">
-                Müşteri Ekle
+                Kaydet
               </button>
             </div>
           </form>
